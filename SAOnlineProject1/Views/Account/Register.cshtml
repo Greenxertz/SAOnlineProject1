@@ -1,0 +1,87 @@
+﻿@model SAOnlineProject1.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Register" method="post">
+            <div class="form-group">
+                <label asp-for="User.FirstName" class="control-label"></label>
+                <input asp-for="User.FirstName" class="form-control" />
+                <span asp-validation-for="User.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.LastName" class="control-label"></label>
+                <input asp-for="User.LastName" class="form-control" />
+                <span asp-validation-for="User.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Address" class="control-label"></label>
+                <input asp-for="User.Address" class="form-control" />
+                <span asp-validation-for="User.Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.City" class="control-label"></label>
+                <input asp-for="User.City" class="form-control" />
+                <span asp-validation-for="User.City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.PostalCode" class="control-label"></label>
+                <input asp-for="User.PostalCode" class="form-control" />
+                <span asp-validation-for="User.PostalCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Province" class="control-label"></label>
+                <input asp-for="User.Province" class="form-control" />
+                <span asp-validation-for="User.Province" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+
+            <div class="form-group">
+                <span asp-validation-summary="All" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

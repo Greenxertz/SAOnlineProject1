@@ -11,5 +11,8 @@ namespace SAOnlineProject1.Data
         {
         }
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<ApplicationUser> applicationUser { get; set; }
+
     }
 }

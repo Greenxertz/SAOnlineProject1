@@ -1,0 +1,47 @@
+﻿@model SAOnlineProject1.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login my tester</h2>
+
+<form asp-action="Login" asp-controller="Account" method="post" class="form-horizontal" asp-route-returUrl="@ViewData["returnURL"]">
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Password" class="form-control" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </div>
+
+    @* Display the login status message, if any *@
+    @if (!string.IsNullOrEmpty(Model.LoginStatus))
+    {
+        <div class="alert alert-danger">
+            @Html.Raw(Model.LoginStatus)
+        </div>
+    }
+</form>
+
+<p>
+    <a asp-action="Register" asp-controller="Account">Register as a new user</a>
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
