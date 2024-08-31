@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SAOnlineProject1.Models
 {
-    public class Products
+    public class Product
     {
         [Key]
         public int Id { get; set; }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SAOnlineProject1.Data;
 
@@ -11,9 +12,11 @@ using SAOnlineProject1.Data;
 namespace SAOnlineProject1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240830111726_AddViewClassToDB")]
+    partial class AddViewClassToDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -337,33 +340,6 @@ namespace SAOnlineProject1.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("SAOnlineProject1.Models.UserCart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("userId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("UserCarts");
-                });
-
             modelBuilder.Entity("SAOnlineProject1.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -465,23 +441,6 @@ namespace SAOnlineProject1.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("SAOnlineProject1.Models.UserCart", b =>
-                {
-                    b.HasOne("SAOnlineProject1.Models.Product", "product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("SAOnlineProject1.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("SAOnlineProject1.Models.Product", b =>
