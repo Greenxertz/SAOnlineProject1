@@ -239,6 +239,10 @@ namespace SAOnlineProject1.Controllers
             _context.PImages.Remove(image);
             await _context.SaveChangesAsync();
 
+            string imageUrl = Path.Combine(_HostEnvironment.WebRootPath, "Images", image.ImageUrl);
+            DeleteImage(imageUrl);
+
+
             // Fetch the updated product details after image deletion
             var product = await _context.Products
                 .Include(p => p.ImgUrls) // Ensure related images are included
@@ -264,9 +268,6 @@ namespace SAOnlineProject1.Controllers
             // Return the Edit view with the updated product data
             return View("Edit", viewModel);
         }
-
-
-
 
 
     }
