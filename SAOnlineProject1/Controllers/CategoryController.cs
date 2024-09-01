@@ -38,6 +38,7 @@ namespace SAOnlineProject1.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Upsert(int? id, Category category)
         {
@@ -68,6 +69,7 @@ namespace SAOnlineProject1.Controllers
             return View(items);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Delete(Category category)
         {
