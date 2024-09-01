@@ -25,12 +25,12 @@
                         @foreach (var item in Model.userCartList)
                         {
                             <tr>
-                                <td>@item.product?.Name </td>
+                                <td>@item.product?.Name</td>
                                 <td>@item.Quantity</td>
-                                <td>@item.product?.Price.ToString("C") </td>
+                                <td>@item.product?.Price.ToString("C")</td>
                                 <td>
                                     @{
-                                        var totalPrice = (item.product?.Price ?? 0) * item.Quantity; 
+                                        var totalPrice = (item.product?.Price ?? 0) * item.Quantity;
                                     }
                                     @totalPrice.ToString("C")
                                 </td>
@@ -48,7 +48,7 @@
             <h3>Order Summary</h3>
             <div class="form-group">
                 <label for="Name">Name:</label>
-                <p>@Model?.orderSummery?.Name </p>
+                <p>@Model?.orderSummery?.Name</p>
             </div>
             <div class="form-group">
                 <label for="DeliveryStreetAddress">Street Address:</label>
@@ -56,15 +56,15 @@
             </div>
             <div class="form-group">
                 <label for="City">City:</label>
-                <p>@Model?.orderSummery?.City </p>
+                <p>@Model?.orderSummery?.City</p>
             </div>
             <div class="form-group">
                 <label for="Province">Province:</label>
-                <p>@Model?.orderSummery?.Province  </p>
+                <p>@Model?.orderSummery?.Province</p>
             </div>
             <div class="form-group">
                 <label for="PostalCode">Postal Code:</label>
-                <p>@Model?.orderSummery?.PostalCode </p>
+                <p>@Model?.orderSummery?.PostalCode</p>
             </div>
             <div class="form-group">
                 <label for="TotalOrderAmount">Total Amount:</label>
@@ -73,17 +73,20 @@
 
             <div class="form-group">
                 <label for="PaymentOptions">Payment Options:</label>
-                @if (Model?.paymentOptions != null && Model.paymentOptions.Any())
+                @if (Model?.PaymentOptions != null && Model.PaymentOptions.Any())
                 {
-                    @Html.DropDownListFor(m => m.paymentOptions, Model.paymentOptions, "Select a payment method", new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.SelectedPaymentOption, Model.PaymentOptions, "Select a payment method", new { @class = "form-control" })
                 }
                 else
                 {
                     <p>No payment options available.</p>
                 }
             </div>
-
-            <button type="submit" class="btn btn-primary">Confirm Order</button>
+            <form asp-controller="Order" asp-action="Summary" method="post">
+                <input type="hidden" name="orderId" value="@Model.orderSummery.Id" />
+                <input type="hidden" name="SelectedPaymentOption" value="@Model.SelectedPaymentOption" />
+                <button type="submit" class="btn btn-primary">Confirm Order</button>
+            </form>
         </div>
     </div>
 </div>
