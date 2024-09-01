@@ -30,7 +30,7 @@ namespace SAOnlineProject1.Controllers
                 var userId = _userManager.GetUserId(User);
                 CartIndexViewModel cartIndexVM = new CartIndexViewModel()
                 {
-                    productList = _db.UserCarts.Include(u => u.product).Where(u => u.userId.Contains(userId)).ToList(),
+                    productList = _db.UserCarts.Include(u => u.product).Where(u => u.UserId.Contains(userId)).ToList(),
                 };
                 var count = _db.UserCarts.Where(u => userId.Contains(userId)).Count();
                 HttpContext.Session.SetInt32(cartCount.sessionCount, count);
@@ -41,89 +41,90 @@ namespace SAOnlineProject1.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> AddToCart(int productId, string? returnUrl)
+        public async Task<IActionResult> AddToCart(int productId, int quantity = 1, string? returnUrl = null)
         {
             var productAddToCart = await _db.Products.FirstOrDefaultAsync(u => u.Id == productId);
-            var CheckIfUserSignedInOrNot = _signInManager.IsSignedIn(User);
-            if (CheckIfUserSignedInOrNot)
+            var isUserSignedIn = _signInManager.IsSignedIn(User);
+
+            if (isUserSignedIn)
             {
-                var user = _userManager.GetUserId(User);
-                if (user != null)
+                var userId = _userManager.GetUserId(User);
+                if (userId != null)
                 {
-                    //Check if the signed user has any cart or not?
-                    var getTheCartIfAnyExistForTheUser = await _db.UserCarts.Where(u => u.userId.Contains(user)).ToListAsync();
-                    if (getTheCartIfAnyExistForTheUser.Count() > 0)
+                    // Check if the signed-in user has any cart items
+                    var userCartItems = await _db.UserCarts.Where(u => u.UserId == userId).ToListAsync();
+
+                    // Check if the product is already in the cart
+                    var existingCartItem = userCartItems.FirstOrDefault(p => p.ProductId == productId);
+                    if (existingCartItem != null)
                     {
-                        //check if the item is already in the cart or not
-                        var getTheQuantity = getTheCartIfAnyExistForTheUser.FirstOrDefault(p => p.ProductId == productId);
-                        if (getTheQuantity != null)
-                        {//if the item is already in the cart just increase the quantity by 1 and update the cart.
-                            getTheQuantity.Quantity = getTheQuantity.Quantity + 1;
-                            _db.UserCarts.Update(getTheQuantity);
-                        }
-                        else
-                        { // User has a cart but addding a new item to the existing cart.
-                            UserCart newItemToCart = new UserCart
-                            {
-                                ProductId = productId,
-                                userId = user,
-                                Quantity = 1,
-                            };
-                            await _db.UserCarts.AddAsync(newItemToCart);
-                        }
+                        // If the item is already in the cart, update the quantity
+                        existingCartItem.Quantity += quantity;
+                        _db.UserCarts.Update(existingCartItem);
                     }
                     else
                     {
+                        // If the item is not in the cart, add a new cart item
                         UserCart newItemToCart = new UserCart
                         {
                             ProductId = productId,
-                            userId = user,
-                            Quantity = 1,
+                            UserId = userId,
+                            Quantity = quantity,
                         };
                         await _db.UserCarts.AddAsync(newItemToCart);
                     }
+
+                    // Save changes to the database
                     await _db.SaveChangesAsync();
                 }
             }
-            if (returnUrl != null)
+
+            // Redirect to the return URL or to the cart index
+            if (!string.IsNullOrEmpty(returnUrl))
             {
-                return RedirectToAction("CartIndex", "Cart");
+                return Redirect(returnUrl);
             }
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("CartIndex", "Cart");
         }
+
 
 
         public IActionResult MinusAnItem(int productId)
         {
-            var itemToMinus = _db.UserCarts.FirstOrDefault(p => p.ProductId == productId);
+            var userId = _userManager.GetUserId(User);
+            var itemToMinus = _db.UserCarts.FirstOrDefault(p => p.ProductId == productId && p.UserId == userId);
+
             if (itemToMinus != null)
             {
-                _db.UserCarts.Remove(itemToMinus);
+                if (itemToMinus.Quantity > 1)
+                {                     
+                    itemToMinus.Quantity -= 1;
+                    _db.UserCarts.Update(itemToMinus);
+                }
+                else
+                {                     
+                    _db.UserCarts.Remove(itemToMinus);
+                }
 
-            } 
-            else
-            {
-                itemToMinus.Quantity -= 1;
-                _db.UserCarts.Update(itemToMinus);
+                _db.SaveChanges();
             }
-            _db.SaveChanges();
-            
+
             return RedirectToAction(nameof(CartIndex));
         }
 
-               public IActionResult DeleteAnItem(int productId)
+        public IActionResult DeleteAnItem(int productId)
         {
-            var itemToMinus = _db.UserCarts.FirstOrDefault(p => p.ProductId == productId);
-            if (itemToMinus != null)
+            var userId = _userManager.GetUserId(User);
+            var itemToDelete = _db.UserCarts.FirstOrDefault(p => p.ProductId == productId && p.UserId == userId);
+
+            if (itemToDelete != null)
             {
-                _db.UserCarts.Remove(itemToMinus);         
-                _db.UserCarts.Update(itemToMinus);
+                _db.UserCarts.Remove(itemToDelete);
+                _db.SaveChanges();
             }
-            _db.SaveChanges();
-            
+
             return RedirectToAction(nameof(CartIndex));
         }
-
 
     }
 }

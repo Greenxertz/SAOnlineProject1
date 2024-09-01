@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using SAOnlineProject1.Data;
 using SAOnlineProject1.Models;
+using System.Globalization;
 
 namespace SAOnlineProject1.Controllers
 {
@@ -18,6 +20,7 @@ namespace SAOnlineProject1.Controllers
             _HostEnvironment = hostEnvironment;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var products = _context.Products.Include(u => u.Category).ToList();
@@ -43,7 +46,7 @@ namespace SAOnlineProject1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel productViewModel)
-        {
+        {          
             // Create a new product instance
             var newProduct = new Product
             {
@@ -281,7 +284,32 @@ namespace SAOnlineProject1.Controllers
             return View("Edit", viewModel);
         }
 
+        [HttpGet]
+        public IActionResult Details(int Id)
+        {
+            var product = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ImgUrls)
+                .FirstOrDefault(p => p.Id == Id);
 
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var productViewModel = new ProductViewModel
+            {
+                Products = product,
+                CategoriesList = _context.Categories.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString(),
+                }),
+                ImgUrls = _context.PImages.Where(u => u.ProductId == Id).ToList()
+            };
+
+            return View(productViewModel);
+        }
 
 
     }

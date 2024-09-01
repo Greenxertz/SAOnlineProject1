@@ -380,7 +380,7 @@ namespace SAOnlineProject1.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("userId")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -388,7 +388,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserCarts");
                 });
@@ -596,7 +596,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasOne("SAOnlineProject1.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("userId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

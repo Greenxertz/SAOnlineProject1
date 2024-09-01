@@ -12,58 +12,63 @@
             <h3>Items in your cart:</h3>
             @if (Model?.userCartList != null && Model.userCartList.Any())
             {
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @foreach (var item in Model.userCartList)
                         {
-                                    <tr>
-                                        <td>@item.product?.Name ?? "N/A"</td>
-                                        <td>@item.Quantity</td>
-                                        <td>@item.product?.Price.ToString("C") ?? "N/A"</td>
-                                        <td>@(item.product?.Price * item.Quantity)?.ToString("C") ?? "N/A"</td>
-                                    </tr>
+                            <tr>
+                                <td>@item.product?.Name </td>
+                                <td>@item.Quantity</td>
+                                <td>@item.product?.Price.ToString("C") </td>
+                                <td>
+                                    @{
+                                        var totalPrice = (item.product?.Price ?? 0) * item.Quantity; 
+                                    }
+                                    @totalPrice.ToString("C")
+                                </td>
+                            </tr>
                         }
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
             }
             else
             {
-                    <p>Your cart is empty.</p>
+                <p>Your cart is empty.</p>
             }
         </div>
         <div class="col-md-4">
             <h3>Order Summary</h3>
             <div class="form-group">
                 <label for="Name">Name:</label>
-                <p>@Model?.orderSummery?.Name ?? "N/A"</p>
+                <p>@Model?.orderSummery?.Name </p>
             </div>
             <div class="form-group">
                 <label for="DeliveryStreetAddress">Street Address:</label>
-                <p>@Model?.orderSummery?.DeliveryStreetAddress ?? "N/A"</p>
+                <p>@Model?.orderSummery?.DeliveryStreetAddress</p>
             </div>
             <div class="form-group">
                 <label for="City">City:</label>
-                <p>@Model?.orderSummery?.City ?? "N/A"</p>
+                <p>@Model?.orderSummery?.City </p>
             </div>
             <div class="form-group">
                 <label for="Province">Province:</label>
-                <p>@Model?.orderSummery?.Province ?? "N/A"</p>
+                <p>@Model?.orderSummery?.Province  </p>
             </div>
             <div class="form-group">
                 <label for="PostalCode">Postal Code:</label>
-                <p>@Model?.orderSummery?.PostalCode ?? "N/A"</p>
+                <p>@Model?.orderSummery?.PostalCode </p>
             </div>
             <div class="form-group">
                 <label for="TotalOrderAmount">Total Amount:</label>
-                <p>@Model?.userCartList?.Sum(u => u.product.Price * u.Quantity).ToString("C") ?? "N/A"</p>
+                <p>@Model?.userCartList?.Sum(u => u.product.Price * u.Quantity).ToString("C")</p>
             </div>
 
             <div class="form-group">
@@ -74,7 +79,7 @@
                 }
                 else
                 {
-                        <p>No payment options available.</p>
+                    <p>No payment options available.</p>
                 }
             </div>
 

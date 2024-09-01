@@ -30,7 +30,7 @@ namespace SAOnlineProject1.Controllers
                 var currentUser = _db.applicationUser.FirstOrDefault(x => x.Id == userId);
                 SummaryViewModel summaryVM = new SummaryViewModel()
                 {
-                    userCartList = _db.UserCarts.Include(u => u.product).Where(u => u.userId.Contains(userId)).ToList(),
+                    userCartList = _db.UserCarts.Include(u => u.product).Where(u => u.UserId.Contains(userId)).ToList(),
                     orderSummery = new UserOrderHeader(),
                     cartUserId = userId,
                 };
