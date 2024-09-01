@@ -43,6 +43,7 @@ namespace SAOnlineProject1.Controllers
             };
             return View(productViewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel productViewModel)
