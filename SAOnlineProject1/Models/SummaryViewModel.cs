@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace SAOnlineProject1.Models
 {
@@ -11,8 +12,13 @@ namespace SAOnlineProject1.Models
 
         public string? cartUserId { get; set; }
 
-        public IEnumerable<SelectListItem>? paymentOptions { get; set; }
 
-        public double? PaymentPaidByCard { get; set; } = 0.0;
+        public string? SelectedPaymentOption { get; set; }
+
+        public IEnumerable<SelectListItem>? PaymentOptions { get; set; } = new List<SelectListItem>
+        {
+        new SelectListItem { Text = "Card", Value = "Card" },
+        new SelectListItem { Text = "EFT", Value = "EFT" }
+        };     
     }
 }

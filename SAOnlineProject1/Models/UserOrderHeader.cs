@@ -12,9 +12,10 @@ namespace SAOnlineProject1.Models
 
         [ForeignKey("UserId")]
         public string? UserId { get; set; }
+        public string ApplicationUserId { get; set; } 
 
         [Required]
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
 
         [Required]
         public DateTime DateOfOrder { get; set; }
@@ -25,10 +26,6 @@ namespace SAOnlineProject1.Models
 
         public double TotalOrderAmount { get; set; }
 
-        public string? TrackingNumber { get; set; }
-
-        public string? Carrier { get; set; }
-
         public string? OrderStatus { get; set; }
 
         public string? PaymentStatus { get; set; }
@@ -36,9 +33,6 @@ namespace SAOnlineProject1.Models
         public DateTime? PaymentProccessDate { get; set; }
 
         public string? TransactionId { get; set; }
-        [Required]
-
-        public string PhoneNumber { get; set; }
         [Required]
 
         public string DeliveryStreetAddress { get; set; }

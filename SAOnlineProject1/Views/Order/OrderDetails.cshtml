@@ -1,0 +1,131 @@
+﻿@model OrderDetailsModelView
+<div class="p-4 bg-dark text-white" style="border: 1px solid #5bc0de; border-radius: 8px;">
+    <form method="post">
+        <input asp-for="UserOrderHeader.Id" hidden />
+        <div class="row">
+            <!-- Customer Details Section -->
+            <div class="col-lg-6 col-md-5 col-sm-12 p-2">
+                <div class="p-3 bg-secondary text-white fw-bold shadow" style="border-radius: 8px;">
+                    <h6>Customer Details</h6>
+                    <hr />
+                    <div asp-validation-summary="ModelOnly"></div>
+
+                    <!-- Customer Name -->
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <label asp-for="UserOrderHeader.Name"></label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="UserOrderHeader.Name" class="form-control bg-dark text-white" readonly />
+                            <span asp-validation-for="UserOrderHeader.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Date of Order -->
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <label asp-for="UserOrderHeader.DateOfOrder"></label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="UserOrderHeader.DateOfOrder" class="form-control bg-dark text-white" readonly />
+                        </div>
+                    </div>
+
+                    <!-- Delivery Address -->
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <label asp-for="UserOrderHeader.DeliveryStreetAddress"></label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="UserOrderHeader.DeliveryStreetAddress" class="form-control bg-dark text-white" readonly />
+                            <span asp-validation-for="UserOrderHeader.DeliveryStreetAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- City -->
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <label asp-for="UserOrderHeader.City"></label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="UserOrderHeader.City" class="form-control bg-dark text-white" readonly />
+                            <span asp-validation-for="UserOrderHeader.City" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Province -->
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <label asp-for="UserOrderHeader.Province"></label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="UserOrderHeader.Province" class="form-control bg-dark text-white" readonly />
+                            <span asp-validation-for="UserOrderHeader.Province" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Postal Code -->
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <label asp-for="UserOrderHeader.PostalCode"></label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="UserOrderHeader.PostalCode" class="form-control bg-dark text-white" readonly />
+                            <span asp-validation-for="UserOrderHeader.PostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Date of Shipped -->
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <label asp-for="UserOrderHeader.DateOfShipped"></label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="UserOrderHeader.DateOfShipped" class="form-control bg-dark text-white" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Details Section -->
+            <div class="col-lg-6 col-md-7 col-sm-12 p-2">
+                <div class="p-3 bg-secondary shadow" style="border-radius: 8px;">
+                    <h6>Order Details</h6>
+                    <hr />
+                    @{
+                        double totalOrderPrice = 0.0;
+                    }
+                    <div class="p-3 bg-dark" style="border-radius: 8px;">
+                        <div class="overflow-auto" style="height: 340px;">
+                            @foreach (var item in Model.UserProductList)
+                            {
+                                <div class="row mb-2 text-white">
+                                    <div class="col-6">
+                                        <span>@item.Product.Name</span>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <strong>@item.Count X $@item.Product.Price</strong>
+                                    </div>
+                                    @{
+                                        double setDecimal = item.Count * item.Product.Price;
+                                        totalOrderPrice += setDecimal;
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Total Price -->
+                    <div class="row mt-3">
+                        <div class="col-6 text-end">
+                            <label>Total Amount:</label>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control text-white text-end font-weight-bold bg-dark" value="$@Math.Round(totalOrderPrice, 2)" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
