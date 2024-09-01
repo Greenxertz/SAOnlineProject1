@@ -16,9 +16,15 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddControllersWithViews();
 
+// Configure the application cookie settings
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";  
+});
+
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Increased timeout for better user experience
+    options.IdleTimeout = TimeSpan.FromMinutes(30);  
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
