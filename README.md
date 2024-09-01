@@ -25,7 +25,7 @@ To get started with the SA Online Mart project, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Greenxertz/SAOnlineMart.git
+   git clone https://github.com/Greenxertz/SAOnlineProject1.git
    cd SAOnlineProject1
    ```
 
