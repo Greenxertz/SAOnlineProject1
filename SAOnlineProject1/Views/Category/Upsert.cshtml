@@ -1,0 +1,40 @@
+﻿@model Category
+
+@{
+    var actionItem = Model != null ? "Edit" : "Create";
+}
+
+<div class="PaddingAll">
+    <h2 class="text-info">@actionItem A Category</h2>
+    <hr />
+    <div class="PaddingAllWhite">
+        <div class="row">
+            <div class="col p-3">
+                <form asp-action="Upsert" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-12 form-group">
+                            <label class="text-info" asp-for="Name"></label>
+                            <input asp-for="Name" class="form-control" placeholder="max 30 characters" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-3 col-md-4 col-sm-8 form-group">
+                            <a asp-action="Index" class="btn btn-primary form-control">Go back</a>
+                        </div>
+                        <div class="offset-md-3 col-md-4 col-sm-8 form-group">
+                            <button type="submit" class="btn btn-success form-control">@actionItem</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

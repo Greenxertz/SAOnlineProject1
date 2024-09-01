@@ -1,8 +1,115 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model SAOnlineProject1.Models.HomePageViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="bg-light border rounded mb-4 p-3" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+    <div class="text-end">
+        <form asp-action="Index" method="get">
+            <div class="row m-2 align-items-center">
+                <div class="col-12 col-md-8 mb-2 mb-md-0">
+                    <h6 class="text-info text-center font-weight-bold">Welcome to Our Online Shopping Page</h6>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="input-group">
+                        <input name="searchByName" placeholder="Search by name" class="form-control" value="@Model.searchByName" aria-label="Search by name" />
+                        <button type="submit" class="btn btn-primary text-white font-weight-bold" aria-label="Search">
+                            <i class="fa fa-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <a asp-action="Index" class="text-primary d-block mt-2 text-center">Back to Full List</a>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 d-none d-md-block bg-white border-end border-secondary p-3">
+        <p class="text-success fw-bold"><i class="fa fa-tags"></i> Search by Categories</p>
+        <hr />
+        @if (Model.Categories.Any())
+        {
+            <ul class="list-unstyled">
+                @foreach (var item in Model.Categories)
+                {
+                    <li class="mb-2">
+                        <a asp-action="Index" asp-route-searchByCategory="@item.Name" class="text-info text-decoration-none">
+                            <i class="fa fa-tag"></i> @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+        <hr />
+    </div>
+
+    <div class="col-md-9">
+        <div class="bg-light border rounded p-3">
+            @if (Model.ProductList.Any())
+            {
+                <div class="row g-4">
+                    @foreach (var item in Model.ProductList)
+                    {
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="card text-black h-100">
+                                <img src="~/Images/@item.HomeImgUrl" class="card-img-top" style="height: 200px; object-fit: cover;" alt="@item.Name" />
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title text-center">@item.Name</h5>
+                                    <p class="text-muted text-center mb-2">@item.Description</p>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="fw-bold">Price:</span><span class="text-primary">$@item.Price</span>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <a asp-action="Details" asp-controller="Product" asp-route-Id="@item.Id" class="btn btn-primary btn-sm">View Details</a>
+
+                                            <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                                                <input type="hidden" name="productId" value="@item.Id" />
+                                                <div class="d-flex align-items-center mt-4">
+                                                    <input type="hidden" id="quantity" name="quantity" value="1" min="1" class="form-control w-25" />
+                                                </div>
+
+                                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                                    <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                                </li>
+                            }
+
+                            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <p class="text-center">No products found.</p>
+            }
+        </div>
+    </div>
 </div>

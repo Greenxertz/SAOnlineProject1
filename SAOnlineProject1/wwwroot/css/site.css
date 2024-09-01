@@ -1,22 +1,81 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
+
+body {
+    background-color: #343a40; /* Dark background */
+    color: #ffffff; /* Light text */
+}
+
+.navbar {
+    background-color: #212529; /* Dark navbar */
+}
+
+.card {
+    background-color: #495057; /* Dark card background */
+}
+
+.btn-primary {
+    background-color: #0056b3; /* Button color */
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Button hover color */
+    }
+
+.text-danger {
+    color: #dc3545; /* Error message color */
+}
+
+.table tbody tr {
+    background-color: rgba(255, 255, 255, 0.5); /* Light background for rows */
+}
+
+    .table tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.2); /* Highlight on hover */
+    }
+
+.table {
+    color: #ffffff; /* Change to a light color for better contrast */
+}
+
+    .table th, .table td {
+        border: 1px solid #ffffff; /* Add a border around cells */
+        padding: 8px; /* Add some padding for spacing */
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.1); /* Light background for even rows */
+    }
+
+.single-item {
+    transition: transform 0.2s; /* Add a transition effect */
+}
+
+    .single-item:hover {
+        transform: scale(1.05); /* Slightly enlarge on hover */
+    }
