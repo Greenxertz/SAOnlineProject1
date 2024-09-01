@@ -71,7 +71,7 @@ We welcome contributions to SA Online Mart! To get involved, please follow these
 
 ### Code of Conduct
 
-Please adhere to our [Code of Conduct](link-to-code-of-conduct) in all interactions and contributions to this project.
+Please adhere to our [Code of Conduct](CONDUCT) in all interactions and contributions to this project.
 
 ## License
 
