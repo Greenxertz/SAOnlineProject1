@@ -40,55 +40,54 @@ namespace SAOnlineProject1.Controllers
             };
             return View(productViewModel);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel productViewModel)
         {
-            string homeImageUrl = "";
-            if (productViewModel != null)
+            // Create a new product instance
+            var newProduct = new Product
             {
-                foreach (var image in productViewModel.Images)
-                {
-                    homeImageUrl = image.FileName;
-                    if (homeImageUrl.Contains("Home"))
-                    {
-                        homeImageUrl = UploadFiles(image);
-                        break;
-                    }
-                }
-            }
-            productViewModel.Products.HomeImgUrl = homeImageUrl;
-            await _context.AddAsync(productViewModel.Products);
-            await _context.SaveChangesAsync();
-            var NewProduct = await _context.Products.Include(u => u.Category).FirstOrDefaultAsync(u => u.Name == productViewModel.Products.Name);
-            productViewModel.Inventories.Name = NewProduct.Name;
-            productViewModel.Inventories.Category = NewProduct.Category.Name;
-            await _context.inventories.AddAsync(productViewModel.Inventories);
+                Name = productViewModel.Products.Name,
+                Price = productViewModel.Products.Price,
+                Description = productViewModel.Products.Description,
+                CategoryId = productViewModel.Products.CategoryId
+            };
+
+            // Add the new product to the context
+            _context.Products.Add(newProduct);
             await _context.SaveChangesAsync();
 
-            if (productViewModel.Images != null)
+            // Handle Image Uploads
+            if (productViewModel.Images != null && productViewModel.Images.Any())
             {
-                foreach (var image in productViewModel.Images)
+                foreach (var item in productViewModel.Images)
                 {
-                    string tempFileName = image.FileName;
-                    if (!tempFileName.Contains("Home"))
+                    string stringFileName = UploadFiles(item);
+
+                    var addressImage = new PImages
                     {
-                        string stringFileName = UploadFiles(image);
-                        var addressImage = new PImages
-                        {
-                            ImageUrl = stringFileName,
-                            ProductId = NewProduct.Id,
-                            ProductName = NewProduct.Name,
-                        };
-                        await _context.PImages.AddAsync(addressImage);
+                        ImageUrl = stringFileName,
+                        ProductId = newProduct.Id,  // Associate the image with the newly created product
+                        ProductName = newProduct.Name,
+                    };
+
+                    await _context.PImages.AddAsync(addressImage);
+
+                    // Update the HomeImgUrl if it's a Home image or if HomeImgUrl is empty
+                    if (item.FileName.Contains("Home") || string.IsNullOrEmpty(newProduct.HomeImgUrl))
+                    {
+                        newProduct.HomeImgUrl = stringFileName;
                     }
                 }
+
+                // Update the new product's HomeImgUrl in the database
+                _context.Products.Update(newProduct);
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Product");
         }
+
 
         private string UploadFiles(IFormFile image)
         {
@@ -134,20 +133,19 @@ namespace SAOnlineProject1.Controllers
             return View(productViewModel);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductViewModel productViewModel)
         {
-            var ProductToEdit = await _context.Products.FirstOrDefaultAsync(u => u.Id == productViewModel.Products.Id);
+            var productToEdit = await _context.Products.FirstOrDefaultAsync(u => u.Id == productViewModel.Products.Id);
 
-            if (ProductToEdit != null)
+            if (productToEdit != null)
             {
                 // Update product properties
-                ProductToEdit.Name = productViewModel.Products.Name;
-                ProductToEdit.Price = productViewModel.Products.Price;
-                ProductToEdit.Description = productViewModel.Products.Description;
-                ProductToEdit.CategoryId = productViewModel.Products.CategoryId;
+                productToEdit.Name = productViewModel.Products.Name;
+                productToEdit.Price = productViewModel.Products.Price;
+                productToEdit.Description = productViewModel.Products.Description;
+                productToEdit.CategoryId = productViewModel.Products.CategoryId;
 
                 // Handle Image Uploads
                 if (productViewModel.Images != null)
@@ -155,30 +153,29 @@ namespace SAOnlineProject1.Controllers
                     foreach (var item in productViewModel.Images)
                     {
                         string tempFileName = item.FileName;
-                        if (!tempFileName.Contains("Home"))
+
+                        // Upload the image
+                        string stringFileName = UploadFiles(item);
+
+                        var addressImage = new PImages
                         {
-                            string stringFileName = UploadFiles(item);
-                            var addressImage = new PImages
-                            {
-                                ImageUrl = stringFileName,
-                                ProductId = productViewModel.Products.Id,
-                                ProductName = productViewModel.Products.Name,
-                            };
-                            await _context.PImages.AddAsync(addressImage);
-                        }
-                        else
+                            ImageUrl = stringFileName,
+                            ProductId = productViewModel.Products.Id,
+                            ProductName = productViewModel.Products.Name,
+                        };
+
+                        await _context.PImages.AddAsync(addressImage);
+
+                        // Update HomeImgUrl if it's a Home image or if HomeImgUrl is empty
+                        if (tempFileName.Contains("Home") || string.IsNullOrEmpty(productToEdit.HomeImgUrl))
                         {
-                            if (string.IsNullOrEmpty(ProductToEdit.HomeImgUrl))
-                            {
-                                string homeImageUrl = UploadFiles(item);
-                                ProductToEdit.HomeImgUrl = homeImageUrl;
-                            }
+                            productToEdit.HomeImgUrl = stringFileName;
                         }
                     }
                 }
 
                 // Ensure update to the product entity
-                _context.Products.Update(ProductToEdit);
+                _context.Products.Update(productToEdit);
 
                 // Save changes asynchronously
                 await _context.SaveChangesAsync();
@@ -186,6 +183,8 @@ namespace SAOnlineProject1.Controllers
 
             return RedirectToAction("Index", "Product");
         }
+
+
 
         [HttpGet]
         public IActionResult Delete(int Id)
@@ -235,23 +234,35 @@ namespace SAOnlineProject1.Controllers
                 return NotFound("Image not found.");
             }
 
-            // Remove the image from the database
-            _context.PImages.Remove(image);
-            await _context.SaveChangesAsync();
-
-            string imageUrl = Path.Combine(_HostEnvironment.WebRootPath, "Images", image.ImageUrl);
-            DeleteImage(imageUrl);
-
-
-            // Fetch the updated product details after image deletion
-            var product = await _context.Products
-                .Include(p => p.ImgUrls) // Ensure related images are included
-                .FirstOrDefaultAsync(p => p.Id == image.ProductId);
-
+            // Get the product related to the image
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == image.ProductId);
             if (product == null)
             {
                 return NotFound("Product not found.");
             }
+
+            // Remove the image from the database
+            _context.PImages.Remove(image);
+            await _context.SaveChangesAsync();
+
+            // Delete the image file from the folder
+            string imageUrl = Path.Combine(_HostEnvironment.WebRootPath, "Images", image.ImageUrl);
+            DeleteImage(imageUrl);
+
+            // If the deleted image was the HomeImgUrl, update it to another image or clear it
+            if (product.HomeImgUrl == image.ImageUrl)
+            {
+                var newHomeImg = await _context.PImages
+                    .Where(img => img.ProductId == product.Id)
+                    .OrderByDescending(img => img.Id)
+                    .FirstOrDefaultAsync();
+
+                product.HomeImgUrl = newHomeImg?.ImageUrl;
+            }
+
+            // Ensure the product entity is updated
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
 
             // Prepare the view model for the Edit view
             var viewModel = new ProductViewModel
@@ -262,12 +273,15 @@ namespace SAOnlineProject1.Controllers
                     {
                         Value = c.Id.ToString(),
                         Text = c.Name
-                    }).ToListAsync() // Convert to SelectListItems for dropdown
+                    }).ToListAsync(),
+                ImgUrls = await _context.PImages.Where(img => img.ProductId == product.Id).ToListAsync()
             };
 
             // Return the Edit view with the updated product data
             return View("Edit", viewModel);
         }
+
+
 
 
     }

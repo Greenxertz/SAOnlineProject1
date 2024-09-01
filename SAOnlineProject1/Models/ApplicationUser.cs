@@ -23,8 +23,5 @@ namespace SAOnlineProject1.Models
         
         [Required]
         public string? Province { get; set; }
-
-
-
     }
 }

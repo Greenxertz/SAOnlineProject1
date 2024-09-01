@@ -1,26 +1,26 @@
 ﻿@model SAOnlineProject1.Models.HomePageViewModel
 
-<div class="bg-light border rounded" style="margin: 20px 0px 20px 0px">
+<div class="bg-light border rounded mb-4" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
     <div class="text-end">
         <form asp-action="Index" method="get">
             <div class="row m-2">
                 <div class="col-md-6 col-lg-8 col-sm-12">
-                    <h6 class="text-info text-center font-weight-bold">Welcome to our Online Shopping Page</h6>
+                    <h6 class="text-info text-center font-weight-bold">Welcome to Our Online Shopping Page</h6>
                 </div>
                 <div class="col-md-6 col-lg-4 col-sm-12">
                     <div class="d-flex justify-content-end">
-                        <input name="searchByName" placeholder="search by name" class="form-control rounded-left" value="@Model.searchByName" />
-                        <button type="submit" class="btn btn bg-primary text-white font-weight-bold"> <i class="fa fa-search"> Search</i></button>
+                        <input name="searchByName" placeholder="Search by name" class="form-control rounded-left" value="@Model.searchByName" />
+                        <button type="submit" class="btn btn-primary text-white font-weight-bold"> <i class="fa fa-search"></i> Search</button>
                     </div>
                 </div>
             </div>
-            <a asp-action="Index">Back to Full List</a>
+            <a asp-action="Index" class="text-primary">Back to Full List</a>
         </form>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-2 bg-white border-start-0 border-end-1 border-top-0 border-bottom-0 border-secondary d-none d-sm-block" style="border:solid black">
+    <div class="col-2 bg-white border-start-0 border-end-1 border-top-0 border-bottom-0 border-secondary d-none d-sm-block">
         <p class="text-success"><strong>Search by Categories</strong></p>
         <hr />
         @if (Model.Categories.Any())
@@ -44,26 +44,24 @@
                 <div class="row d-flex justify-content-center">
                     @foreach (var item in Model.ProductList)
                     {
-                        <div class="col-lg-auto col-md-auto mg-1 py-2 col-sm-auto">
-                            <div class="card single-item" style="border-bottom:1px solid gray; height:270px; width:250px; box-shadow: 0 2px 4px 0 blue, 0 6px 20px rgba(0, 0, 0, 0.19);">
-                                <div class="img-container">
-                                    <a asp-action="Details" asp-route-Id="@item.Id">
-                                        <img src="~/Images/@item.HomeImgUrl" class="card-img-top rounded" style="width: 250px; height:250px; max-width:100%;" alt="@item.Name" />
-                                    </a>
-                                    <h3>
-                                        <span class="store-item-icon">
-                                            $@item.Price
-                                        </span>
-                                    </h3>
-                                </div>
-                                <div class="card-body bg-light">
-                                    <div class="row card-text text-capitalize">
-                                        <div class="col-lg-10 col-md-9 col-sm-6">
-                                            <p class="text-success" id="store-item-name"><strong>@item.Name</strong></p>
+                        <div class="col-md-4 col-lg-3 col-sm-6 mb-4">
+                            <div class="card text-black">
+                                <img src="~/Images/@item.HomeImgUrl" class="card-img-top" style="height: 200px; object-fit: cover;" alt="@item.Name" />
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="text-muted mb-4">@item.Description</p>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Price</span><span>$@item.Price</span>
                                         </div>
-                                        <div class="col-lg-1 col-md-3 col-sm-6 text-end">
-                                            <strong id="store-item-price" class="font-weight-bold"><i class="fas fa-solid fa-plus">Add to cart</i></strong>
-                                        </div>
+                                       
+                                    </div>
+                                    
+                                    <div class="text-center mt-3">
+                                        <a asp-action="Details" asp-route-Id="@item.Id" class="btn btn-primary">View Details</a>
+                                        <a asp-action="AddToCart" asp-route-id="@item.Id" class="btn btn-secondary">Add to Cart</a>
                                     </div>
                                 </div>
                             </div>

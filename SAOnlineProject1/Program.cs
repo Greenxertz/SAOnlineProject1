@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using SAOnlineProject1.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,16 +11,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-.AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddRoles<IdentityRole>() // Adding role management
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSession(Options =>
+builder.Services.AddSession(options =>
 {
-    Options.IdleTimeout = TimeSpan.FromSeconds(30);
-    Options.Cookie.HttpOnly = true;
-    Options.Cookie.IsEssential = true;
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Increased timeout for better user experience
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
-
 
 var app = builder.Build();
 
@@ -33,7 +33,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -49,6 +48,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();

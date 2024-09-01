@@ -15,9 +15,11 @@ namespace SAOnlineProject1.Data
         public DbSet<ApplicationUser> applicationUser { get; set; }
 
         public DbSet<Product> Products { get; set; } 
-        public DbSet<Inventory> inventories { get; set; } 
+        public DbSet<Inventory> Inventories { get; set; } 
         public DbSet<PImages> PImages { get; set; } 
         public DbSet<UserCart> UserCarts { get; set; }
+        public DbSet<UserOrderHeader> orderHeaders { get; set; } 
+        public DbSet<OrderDetails> orderDetails { get; set; }
 
     }
 }
