@@ -29,20 +29,20 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category Management</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product Management</a>
                             </li>
                         }
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="OrderHistory">Order</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="OrderHistory">Order History</a>
                         </li>
                         <li class="nav-item">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <a asp-controller="Cart" asp-action="CartIndex" class="nav-link">
+                                <a asp-controller="Cart" asp-action="CartIndex" class="nav-link"> Your Cart 
                                     @if (HttpContextAccessor.HttpContext.Session.GetInt32(cartCount.sessionCount) != null)
                                     {
                                         var count = HttpContextAccessor.HttpContext.Session.GetInt32(cartCount.sessionCount);
