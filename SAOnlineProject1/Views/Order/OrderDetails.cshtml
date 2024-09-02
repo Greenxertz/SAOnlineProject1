@@ -104,7 +104,7 @@
                                         <span>@item.Product.Name</span>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <strong>@item.Count X $@item.Product.Price</strong>
+                                        <strong>@item.Count X R @item.Product.Price</strong>
                                     </div>
                                     @{
                                         double setDecimal = item.Count * item.Product.Price;
@@ -121,7 +121,7 @@
                             <label>Total Amount:</label>
                         </div>
                         <div class="col-6">
-                            <input class="form-control text-white text-end font-weight-bold bg-dark" value="$@Math.Round(totalOrderPrice, 2)" readonly />
+                            <input class="form-control text-white text-end font-weight-bold bg-dark" value="R @Math.Round(totalOrderPrice, 2)" readonly />
                         </div>
                     </div>
                 </div>

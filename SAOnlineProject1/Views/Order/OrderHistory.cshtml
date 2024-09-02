@@ -15,15 +15,9 @@
     {
         case "Pending":
             Pending = activeClasses;
-            break;
-        case "Inprocess":
-            Inprocess = activeClasses;
-            break;
+            break;         
         case "Completed":
             Completed = activeClasses;
-            break;
-        case "Canceled":
-            Canceled = activeClasses;
             break;
         case "Shipped":
             Shipped = activeClasses;
@@ -48,10 +42,8 @@
     <div class="card-header d-flex justify-content-center">
         <div class="btn-group">
             <a asp-controller="Order" asp-action="OrderHistory" asp-route-status="Pending" class="@Pending">Pending Orders</a>
-            <a asp-controller="Order" asp-action="OrderHistory" asp-route-status="Inprocess" class="@Inprocess">In Process</a>
             <a asp-controller="Order" asp-action="OrderHistory" asp-route-status="Shipped" class="@Shipped">Shipped</a>
             <a asp-controller="Order" asp-action="OrderHistory" asp-route-status="Completed" class="@Completed">Completed</a>
-            <a asp-controller="Order" asp-action="OrderHistory" asp-route-status="Canceled" class="@Canceled">Canceled</a>
             <a asp-controller="Order" asp-action="OrderHistory" asp-route-status="" class="@All">All</a>
         </div>
     </div>
