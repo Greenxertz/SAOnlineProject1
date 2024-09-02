@@ -43,7 +43,7 @@ To get started with the SA Online Mart project, follow these steps:
    dotnet ef database update
    ```
 incase I have created a script for the [Database](Database_script) but there is no data.
-I hav also inlcuded the script to insert the [Database Data](resources.sql).
+I have also inlcuded the script to insert the [Database Data](resources.sql).
 
 4. **Run the application**:
    ```bash
