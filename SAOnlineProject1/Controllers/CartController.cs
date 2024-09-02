@@ -51,20 +51,20 @@ namespace SAOnlineProject1.Controllers
                 var userId = _userManager.GetUserId(User);
                 if (userId != null)
                 {
-                    // Check if the signed-in user has any cart items
+                     
                     var userCartItems = await _db.UserCarts.Where(u => u.UserId == userId).ToListAsync();
 
-                    // Check if the product is already in the cart
+                     
                     var existingCartItem = userCartItems.FirstOrDefault(p => p.ProductId == productId);
                     if (existingCartItem != null)
                     {
-                        // If the item is already in the cart, update the quantity
+                         
                         existingCartItem.Quantity += quantity;
                         _db.UserCarts.Update(existingCartItem);
                     }
                     else
                     {
-                        // If the item is not in the cart, add a new cart item
+                       
                         UserCart newItemToCart = new UserCart
                         {
                             ProductId = productId,
@@ -74,12 +74,12 @@ namespace SAOnlineProject1.Controllers
                         await _db.UserCarts.AddAsync(newItemToCart);
                     }
 
-                    // Save changes to the database
+                     
                     await _db.SaveChangesAsync();
                 }
             }
 
-            // Redirect to the return URL or to the cart index
+             
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);

@@ -38,7 +38,7 @@ public class HomeController : Controller
 
         IQueryable<Product> productsQuery = _db.Products;
 
-        // Search Logic
+         
         if (!string.IsNullOrEmpty(searchByName))
         {
             productsQuery = productsQuery.Where(product => EF.Functions.Like(product.Name, $"%{searchByName}%"));
@@ -56,7 +56,7 @@ public class HomeController : Controller
         vm.TotalPages = (int)Math.Ceiling(vm.TotalProducts / (double)PageSize);
         vm.CurrentPage = page;
 
-        // Retrieve products for the current page
+        
         vm.ProductList = await productsQuery
             .Skip((page - 1) * PageSize)
             .Take(PageSize)
