@@ -248,7 +248,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("SAOnlineProject1.Models.Inventory", b =>
@@ -275,7 +275,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Inventories");
+                    b.ToTable("Inventories", (string)null);
                 });
 
             modelBuilder.Entity("SAOnlineProject1.Models.OrderDetails", b =>
@@ -304,7 +304,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("orderDetails");
+                    b.ToTable("orderDetails", (string)null);
                 });
 
             modelBuilder.Entity("SAOnlineProject1.Models.PImages", b =>
@@ -330,7 +330,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("PImages");
+                    b.ToTable("PImages", (string)null);
                 });
 
             modelBuilder.Entity("SAOnlineProject1.Models.Product", b =>
@@ -363,7 +363,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("SAOnlineProject1.Models.UserCart", b =>
@@ -390,7 +390,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCarts");
+                    b.ToTable("UserCarts", (string)null);
                 });
 
             modelBuilder.Entity("SAOnlineProject1.Models.UserOrderHeader", b =>
@@ -453,7 +453,7 @@ namespace SAOnlineProject1.Data.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("orderHeaders");
+                    b.ToTable("orderHeaders", (string)null);
                 });
 
             modelBuilder.Entity("SAOnlineProject1.Models.ApplicationUser", b =>
