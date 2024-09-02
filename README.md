@@ -50,7 +50,10 @@ I have also inlcuded the script to insert the [Database Data](resources.sql).
    dotnet run
    ```
    - Navigate to `https://localhost:5001` in your web browser to access the application, however visual studio should automatically open the browser to the page.
-
+**Available Accounts after scripts**
+When running the application there will be 2 accounts available but you can register new ones if you would like.
+Admin: 2@gmail.com Password: 123456Gg!
+Customer: 22@gmail.com Password: 123456Gg! 
 ## Contribution Guidelines
 
 We welcome contributions to SA Online Mart! To get involved, please follow these guidelines:
