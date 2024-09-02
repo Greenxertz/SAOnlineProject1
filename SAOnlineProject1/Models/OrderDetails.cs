@@ -21,10 +21,9 @@ namespace SAOnlineProject1.Models
         [ForeignKey("ProductId")]
 
         public Product? Product { get; set; }
-        //quantity of each unique item for the specific individual UserOrderHeader [Required]
-
+       
         public int Count { get; set; }
-        //total price of individual item from the cart
+       
         [Required]
 
         public double Price { get; set; }  

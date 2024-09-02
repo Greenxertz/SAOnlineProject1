@@ -77,7 +77,7 @@ namespace SAOnlineProject1.Controllers
             var claim = _signInManager.IsSignedIn(User);
             if (claim)
             {
-                var userId = _userManager.GetUserId(User); // Get the currently logged-in user's ID
+                var userId = _userManager.GetUserId(User);  
                 var currentUser = await _db.applicationUser.FindAsync(userId);
 
                 var totalOrderAmount = _db.UserCarts
@@ -85,7 +85,7 @@ namespace SAOnlineProject1.Controllers
                  .Where(u => u.UserId == userId)
                  .Sum(u => u.product.Price * u.Quantity);
 
-                // Initialize a new order summary
+                 
                 var orderSummery = new UserOrderHeader
                 {
                     ApplicationUserId = currentUser.Id,
@@ -104,8 +104,8 @@ namespace SAOnlineProject1.Controllers
                     TotalOrderAmount = totalOrderAmount,
                 };
 
-                await _db.AddAsync(orderSummery); // Add the order summary to the database
-                await _db.SaveChangesAsync(); // Save changes
+                await _db.AddAsync(orderSummery);  
+                await _db.SaveChangesAsync();  
 
                 return RedirectToAction("OrderSuccess", new { id = orderSummery.Id });
             }
@@ -124,7 +124,7 @@ namespace SAOnlineProject1.Controllers
                 var userId = _userManager.GetUserId(User);
                 var UserCartRemove = _db.UserCarts.Where(u => u.UserId.Contains(userId)).ToList();
                 var orderProcessed = _db.orderHeaders.FirstOrDefault(h => h.Id == id);
-                //Update Payment status
+                 
                 if (orderProcessed != null)
                 {
                     if (orderProcessed.PaymentStatus == "Not Paid")
@@ -132,7 +132,7 @@ namespace SAOnlineProject1.Controllers
                         orderProcessed.PaymentStatus = "Paid";
                     }
                 }
-                //Add the items from cart to Order Details table
+                 
                 foreach (var list in UserCartRemove)
                 {
                     OrderDetails orderReceived = new OrderDetails()
@@ -144,7 +144,7 @@ namespace SAOnlineProject1.Controllers
 
                     _db.orderDetails.Add(orderReceived);
                 }
-                //Removed items from cart for the current user after successully completing the payment process.
+                 
                 _db.UserCarts.RemoveRange(UserCartRemove);
                 _db.SaveChanges(true);
                 var count = _db.UserCarts.Where(u => u.UserId.Contains(_userManager.GetUserId(User))).ToList().Count;
