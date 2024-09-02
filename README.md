@@ -42,7 +42,7 @@ To get started with the SA Online Mart project, follow these steps:
    ```bash
    dotnet ef database update
    ```
-incase I have created a script for the [Database](Database_Script)
+incase I have created a script for the [Database](Database_script)
 
 4. **Run the application**:
    ```bash
